@@ -46,24 +46,44 @@ def extract_fields(preprocessed_text):
     return None
 
 @app.route("/process", methods=["POST"])
+from google.cloud import storage
+
+storage_client = storage.Client()
+
+@app.route("/process", methods=["POST"])
 def process():
     data = request.json
-    raw_log = data.get("log")
 
-    cleaned = preprocess_text(raw_log)
-    extracted = extract_fields(cleaned)
+    bucket_name = data.get("bucket")
+    file_name = data.get("file")
 
-    if not extracted:
-        return jsonify({"status": "ignored", "raw": raw_log})
+    if not bucket_name or not file_name:
+        return jsonify({"error": "bucket and file required"}), 400
+
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(file_name)
+    content = blob.download_as_text()
+
+    results = []
+
+    for line in content.splitlines():
+        cleaned = preprocess_text(line)
+        extracted = extract_fields(cleaned)
+
+        if extracted:
+            results.append({
+                "raw_log": line,
+                "cleaned_log": cleaned,
+                "event_type": extracted["event_type"],
+                "reason": extracted["reason"],
+                "interface": extracted["interface"]
+            })
 
     return jsonify({
-        "status": "processed",
-        "raw_log": raw_log,
-        "cleaned_log": cleaned,
-        "event_type": extracted["event_type"],
-        "reason": extracted["reason"],
-        "interface": extracted["interface"]
+        "processed_records": len(results),
+        "data": results
     })
+
 
 @app.route("/", methods=["GET"])
 def health():
@@ -71,3 +91,4 @@ def health():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
+
