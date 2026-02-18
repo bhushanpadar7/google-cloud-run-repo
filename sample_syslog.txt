@@ -1,0 +1,7 @@
+<188>Feb 5 16:35:19.554 UTC %PM-4-ERR_DISABLE: bpduguard error detected on Tw1/0/21, putting Tw1/0/21 in err-disable state
+<188>Feb 5 16:35:19.549 UTC %PM-4-ERR_DISABLE: bpduguard error detected on Te3/0/40, putting Te3/0/40 in err-disable state
+<188>Feb 5 16:35:13.110 UTC %PM-4-ERR_RECOVER: Attempting to recover from bpduguard err-disable state on Te3/0/40
+<188>Feb 5 16:34:11.880 UTC %PM-4-ERR_DISABLE: gbic-invalid error detected on Te2/1/1, putting Te2/1/1 in err-disable state
+<188>Feb 5 16:33:48.339 UTC %PM-4-ERR_DISABLE: bpduguard error detected on Tw1/0/21, putting Tw1/0/21 in err-disable state
+<188>Feb 5 16:33:47.537 UTC %PM-4-ERR_RECOVER: Attempting to recover from gbic-invalid err-disable state on Te2/1/1
+<188>Feb 5 16:33:15.667 UTC %PM-4-ERR_RECOVER: Attempting to recover from bpduguard err-disable state on Tw1/0/17
